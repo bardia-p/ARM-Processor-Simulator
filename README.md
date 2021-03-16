@@ -32,12 +32,12 @@ Released on: 15/03/2021
 Locating the main memory
 <img src="Images/debugger_1.JPG" />
 </p>
-
+<br/>
 <p align="center">
 Loading the object code
 <img src="Images/debugger_2.JPG" />
 </p>
-
+<br/>
 <p align="center">
 The code loaded in the memory
 <img src="Images/debugger_3.JPG" />
