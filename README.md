@@ -32,14 +32,17 @@ Released on: 15/03/2021
 Locating the main memory
 <img src="Images/debugger_1.JPG" />
 </p>
+
 <p align="center">
 Loading the object code
 <img src="Images/debugger_2.JPG" />
 </p>
+
 <p align="center">
 The code loaded in the memory
 <img src="Images/debugger_3.JPG" />
 </p>
+
 3. Then go back to the main debugger interface. Click on reset to load the first instruction. Then click on run to run the code
 <p align="center">
 <img src="Images/debugger_4.JPG" />
