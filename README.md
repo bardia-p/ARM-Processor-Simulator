@@ -1,4 +1,3 @@
-
 # Assembly Projects
 
 by Bardia Parmoun
