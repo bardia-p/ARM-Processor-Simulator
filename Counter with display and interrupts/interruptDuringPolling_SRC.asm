@@ -90,7 +90,7 @@ DisplayCounter
 ;   parameter(s):  R0 = current counter value (#0 to #99)
 ;   return:        R0 = updated counter value (#0 to #99)
 UpdateCounter
-    PUSH { R0, R2, R3, R14 }
+    PUSH { R2, R3, R14 }
     ; Detect current Switch IO component state
     LDR  R3, [IObaseAddress]  ; load IOswitch address into a register
     LDR  R2, [R3, IOswitch]   ; read Switch state (0 or 1) 
@@ -108,7 +108,7 @@ decrement
     MOV  R0, #99        ;    else: reset counter to 99
     B    updateDone     ;          then update is done
 updateDone              ; Counter update is done
-    POP { R0, R2, R3, R15 }
+    POP { R2, R3, R15 }
 
 ;-----------------------------------------------------------------------;
 ;--------- Interrupt Service Routine (ISR) SECTION ---------------------;
@@ -117,17 +117,16 @@ updateDone              ; Counter update is done
 ;   This ISR will handle an interrupt from the Switch peripheral (INT6).
 ;   We want it to toggle the LED
 SwitchISR
-    PUSH {PSR, R15, R14, R2, R1, R0}
     LDR R0, [LEDstate]      ; get current LED state (0=off, 1=on)
-    NOT R0;
-    AND R0, 0x1;            ; invert it (make up your own logic,
+    NOT R0, R0;
+    AND R0, R0, #0x1;            ; invert it (make up your own logic,
                             ;  as many/few instructions as you need)
     LDR R1, [IObaseAddress] ; get IO base address
     STR R0, [R1, IOLED]     ; set new LED state
     STR R0, [LEDstate]          ; update our LEDstate variable as well
     MOV R2, #0            
     STR R2,  [R1, IOswitchIntClear] ; clear the Switch interrupt signal
-    POP {R0, R1, R2, R14, R15, PSR}       ; done. Return from ISR (Lec 20 slide 57)
+    RETI       ; done. Return from ISR (Lec 20 slide 57)
     
 ;-----------------------------------------------------------------------;
 ;------------------------ MAIN SECTION ---------------------------------;
@@ -140,7 +139,7 @@ Main
     
     ; Enable Interrupts (Lecture 20 slide 65)
     BL   EnableSwitchInt ; Enable Interrupts from the Switch
-    EL                  ; Enable Interrupts to the processor
+    EI                  ; Enable Interrupts to the processor
     
 ; for (R0 = 0; -1<R0<100; R0++ or R0-- depending on Switch state) {
 TickAgain
